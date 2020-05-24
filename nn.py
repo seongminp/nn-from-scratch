@@ -2,46 +2,41 @@ class NN:
     """Class representing a neural network.
 
     Attributes:
-        layers (list): Layers :)
-        layer_props (list): 
-            List of tuples containing layer size and activation info.
-            Must contain at least two elements (input and output layer).
+        layers (list): List of Layer instances.
     """
 
-    def __init__(self, layer_props):
-        """Initialize NN class with supplied layer properties."""
-        # Number of layers.
-        self.num_layers = props['layers']
-        self.layers = []
+    def __init__(self, layers):
+        """Initialize NN class with supplied layer instances."""
 
-        # Validate layer properties. 
-        # Specific to this implementation of NN, nothing really to learn here.
-        # Will raise error if layer_props is invalid.
-        self.validate_layer_props(layer_props)
-        self.layer_props = []
+        if len(layers) < 1:
+            raise Exception('NN must have at least one layer.')
+
+        self.layers = layers
+        self.num_layers = len(layers)
 
         # Initialize layers from input props.
         self.init_layers()
 
-    def validate_layer_props(self, layer_props):
-        """Check if layers are valid. 
-        Args:
-            layer_props (list): List of tuples containing 
-                layer size and activation info.
-
-        Returns:
-            bool: Whether supplied layer properties are valid.
-        """
-        
-        if len(layer_props) < 2:
-            raise ValueError('layer_props must have length of at least 2.')
-
-        for i, (size, act) in enumerate(layer_props):
-            if dim <= 0:
-                raise ValueError(
-                        f'layer {i}: layer dimention must have size > 0')
-
     def init_layers(self):
         """Initialize weights and biases"""
+        prev_s = self.layers[0].size
+        for l in self.layers:
+            l.init(prev_s, l.size)
+            prev_s = l.size
+
+    def forward(self, X):
+        """Forward pass through all layers.
+
+        Args:
+            X (2D np.ndarray): Input to the neural network.
+
+        Returns:
+            2D np.ndarray: Output of forward pass.
+        """
+        for l in self.layers:
+            layer_activation = l.forward(X)
+
+
+
 
 
